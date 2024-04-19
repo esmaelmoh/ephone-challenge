@@ -83,7 +83,7 @@ export const nodesSlice = createSlice({
       );
       if (nodeToDuplicate) {
         const duplicatedNode = {
-          id: `${state.nodes.length + 1}`,
+          id: `${Math.random() * 400}`,
           type: `${nodeToDuplicate.type}`,
           data: {
             ...nodeToDuplicate.data,

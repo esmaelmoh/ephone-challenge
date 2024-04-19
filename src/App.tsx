@@ -51,6 +51,7 @@ export default function App() {
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const editMode = useAppSelector((state) => state.nodes.editMode);
+  const selectedIdState = useAppSelector((state) => state.nodes.selectedNodeId);
 
   const [label, setLabel] = useState("");
   const [editLabel, setEditLabel] = useState("");
@@ -137,9 +138,11 @@ export default function App() {
                   <li
                     onClick={() => dispatch(setSelecteNodeId({ id: node.id }))}
                     key={node.data.label}
-                    className={
-                      "dark:text-white flex justify-between my-2 dark:bg-gray-700 bg-gray-100 text-gray-700 hover:bg-opacity-75 group  items-center px-2 py-2  font-medium rounded-md"
-                    }
+                    className={`${
+                      selectedIdState === node.id
+                        ? "dark:bg-emerald-700 bg-emerald-100"
+                        : "dark:bg-gray-700 bg-gray-100"
+                    } dark:text-white flex justify-between my-2 text-gray-700 hover:bg-opacity-75 group items-center px-2 py-2 font-medium rounded-md`}
                   >
                     <div className="flex">
                       <BiCheck className="mr-3 h-6 w-6 flex-shrink-0 text-emerald-300 " />
