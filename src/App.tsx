@@ -20,6 +20,9 @@ import {
   addNode,
   duplicateNode,
   selectNodes,
+  setSelecteNodeId,
+  updateNodeLabel,
+  setEditMode,
 } from "./store/slices/flow/flowSlice";
 import "reactflow/dist/base.css";
 import MenuExtractionPanel from "./components/MenuExtraction";
@@ -44,8 +47,10 @@ export default function App() {
 
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
+  const editMode = useAppSelector((state) => state.nodes.editMode);
 
   const [label, setLabel] = useState("");
+  const [editLabel, setEditLabel] = useState("");
 
   const handleAddNode = () => {
     if (label) {
@@ -79,13 +84,29 @@ export default function App() {
   };
   const onSelectNode = useCallback((nodeId: string) => {
     setSelectedNodeId(nodeId);
+    dispatch(setSelecteNodeId({ id: nodeId }));
   }, []);
-
-  console.log(selectedNodeId, 987345678);
 
   const handleDeleteNode = (id: string) => {
     console.log(id, "9854378");
     dispatch(deleteNode(id));
+  };
+  const handleEditNode = (id: string) => {
+    console.log(id, "9854378");
+    dispatch(updateNodeLabel({ id: id, label: editLabel }));
+    dispatch(setEditMode({ mode: false }));
+    setEditLabel("");
+    toast.success("Node Successfully Edited!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
   const handleDuplicate = (id: string) => {
     console.log(id, "9854378");
@@ -155,6 +176,23 @@ export default function App() {
                   >
                     Duplicate Node
                   </button>
+                  {editMode && (
+                    <>
+                      {" "}
+                      <input
+                        className="p-2 bg-gray-50 dark:bg-gray-700 dark:text-white text-gray-700 border border-gray-300 dark:border-gray-600 rounded resize-none"
+                        placeholder="Edit Node"
+                        value={editLabel}
+                        onChange={(e) => setEditLabel(e.target.value)}
+                      />
+                      <button
+                        className=" p-2 bg-amber-600 text-white rounded hover:bg-amber-500"
+                        onClick={() => handleEditNode(selectedNodeId)}
+                      >
+                        Edit Node
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="graph-container p-4 ">

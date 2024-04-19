@@ -10,6 +10,8 @@ export interface Node {
 
 interface NodesState {
   nodes: Node[];
+  selectedNodeId: string;
+  editMode: boolean;
 }
 
 const initialState: NodesState = {
@@ -39,18 +41,28 @@ const initialState: NodesState = {
       data: { label: "with ephone!💡" },
     },
   ],
+  selectedNodeId: "",
+  editMode: false,
 };
 
 export const nodesSlice = createSlice({
   name: "nodes",
   initialState,
   reducers: {
+    setSelecteNodeId: (state, action) => {
+      const { id } = action.payload;
+      state.selectedNodeId = id;
+    },
+    setEditMode: (state, action) => {
+      const { mode } = action.payload;
+      state.editMode = mode;
+    },
     addNode: (state, action) => {
       const { id, label } = action.payload;
       const newNode = {
         id,
         type: "new-node",
-        data: { label }, // Set the label of the new node to the extracted menu item string
+        data: { label },
         position: { x: Math.random() * 200, y: Math.random() * 200 },
       };
       state.nodes.push(newNode);
@@ -58,30 +70,43 @@ export const nodesSlice = createSlice({
     deleteNode: (state, action) => {
       state.nodes = state.nodes.filter((node) => node.id !== action.payload);
     },
+    updateNodeLabel: (state, action) => {
+      const { id, label } = action.payload;
+      const nodeToUpdate = state.nodes.find((node) => node.id === id);
+      if (nodeToUpdate) {
+        nodeToUpdate.data.label = label;
+      }
+    },
     duplicateNode: (state, action) => {
       const nodeToDuplicate = state.nodes.find(
         (node) => node.id === action.payload
       );
       if (nodeToDuplicate) {
         const duplicatedNode = {
-          // ...nodeToDuplicate,
-          id: `${state.nodes.length + 1}`, // Generate a new ID for the duplicated node
+          id: `${state.nodes.length + 1}`,
           type: `${nodeToDuplicate.type}`,
           data: {
             ...nodeToDuplicate.data,
-          }, // Update the label of the duplicated node
+          },
           position: {
             x: nodeToDuplicate.position.x + 50,
             y: nodeToDuplicate.position.y + 50,
-          }, // Adjust position for clarity
+          },
         };
-        state.nodes.push(duplicatedNode); // Add duplicated node to state
+        state.nodes.push(duplicatedNode);
       }
     },
   },
 });
 
-export const { addNode, deleteNode, duplicateNode } = nodesSlice.actions;
+export const {
+  addNode,
+  deleteNode,
+  duplicateNode,
+  setSelecteNodeId,
+  updateNodeLabel,
+  setEditMode,
+} = nodesSlice.actions;
 
 export const selectNodes = (state: RootState) => state.nodes.nodes;
 
