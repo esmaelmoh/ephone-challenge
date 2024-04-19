@@ -1,4 +1,3 @@
-import React from "react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { toggleMode } from "../store/slices/theme/themeSlice";

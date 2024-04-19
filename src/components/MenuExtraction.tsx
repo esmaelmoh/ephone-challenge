@@ -1,5 +1,3 @@
-// MenuExtractionPanel.tsx
-
 import { useState } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { addNode } from "../store/slices/flow/flowSlice";

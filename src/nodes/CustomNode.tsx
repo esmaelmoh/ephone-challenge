@@ -1,4 +1,4 @@
-import { Position, Handle } from "reactflow"; // Import HandleProps and Position types
+import { Position, Handle } from "reactflow";
 import { useAppDispatch } from "../store/hooks";
 import { deleteNode, duplicateNode } from "../store/slices/flow/flowSlice";
 import { CgClose } from "react-icons/cg";

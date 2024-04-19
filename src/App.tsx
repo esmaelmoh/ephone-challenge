@@ -22,9 +22,8 @@ import {
 } from "./store/slices/flow/flowSlice";
 import "reactflow/dist/base.css";
 import MenuExtractionPanel from "./components/MenuExtraction";
-import { toggleMode } from "./store/slices/theme/themeSlice";
-import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { BiCheck } from "react-icons/bi";
+import DarkMode from "./components/DarkMode";
 
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -73,6 +72,7 @@ export default function App() {
       <div className={` ${isDarkMode ? "dark" : ""}`}>
         <div className="lg:flex h-full">
           <div className="lg:w-[500px]  dark:bg-gray-800 bg-white  ">
+            <DarkMode />
             <MenuExtractionPanel />
             <div className="p-4">
               <h2 className="text-lg font-semibold dark:text-white">
