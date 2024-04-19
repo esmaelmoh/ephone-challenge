@@ -1,6 +1,6 @@
 import type { OnConnect } from "reactflow";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Background,
   Controls,
@@ -14,7 +14,12 @@ import {
 import { nodeTypes } from "./nodes";
 import { initialEdges, edgeTypes } from "./edges";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { selectNodes } from "./store/slices/flow/flowSlice";
+import {
+  deleteNode,
+  addNode,
+  duplicateNode,
+  selectNodes,
+} from "./store/slices/flow/flowSlice";
 import "reactflow/dist/base.css";
 import MenuExtractionPanel from "./components/MenuExtraction";
 import { toggleMode } from "./store/slices/theme/themeSlice";
@@ -23,6 +28,7 @@ import { BiCheck } from "react-icons/bi";
 
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [selectedNodeId, setSelectedNodeId] = useState<string>("");
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect: OnConnect = useCallback(
     (connection) => setEdges((edges) => addEdge(connection, edges)),
@@ -35,27 +41,38 @@ export default function App() {
     setNodes(count);
   }, [count]);
 
-  const isDarkMode = useAppSelector((content) => content.theme.isDarkMode);
   const dispatch = useAppDispatch();
-  const handleToggleDarkMode = () => {
-    dispatch(toggleMode());
+  const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
+
+  const [text, setText] = useState("");
+
+  const handleAddNode = () => {
+    if (text) {
+      dispatch(addNode({ id: `${Math.random() * 400}`, label: text }));
+      setText("");
+    }
   };
+  const onSelectNode = useCallback((nodeId: string) => {
+    setSelectedNodeId(nodeId);
+  }, []);
+
+  console.log(selectedNodeId, 987345678);
+
+  const handleDeleteNode = (id: string) => {
+    console.log(id, "9854378");
+    dispatch(deleteNode(id));
+  };
+  const handleDuplicate = (id: string) => {
+    console.log(id, "9854378");
+    dispatch(duplicateNode(id));
+  };
+
   return (
     <>
       {" "}
       <div className={` ${isDarkMode ? "dark" : ""}`}>
         <div className="lg:flex h-full">
           <div className="lg:w-[500px]  dark:bg-gray-800 bg-white  ">
-            <button
-              className="m-4 p-2 border-2 rounded-full border-lime-100 dark:border-gray-700 "
-              onClick={handleToggleDarkMode}
-            >
-              {isDarkMode ? (
-                <MdDarkMode className="h-6 w-6  text-lime-400" />
-              ) : (
-                <MdLightMode className="h-6 w-6 text-lime-400" />
-              )}
-            </button>
             <MenuExtractionPanel />
             <div className="p-4">
               <h2 className="text-lg font-semibold dark:text-white">
@@ -83,6 +100,37 @@ export default function App() {
                   💡 I used React, ReactFlow, Redux Toolkit, TypeScript and
                   Tailwind CSS
                 </h1>
+                <div className=" shadow-sm dark:text-white text-center p-3 mb-2 bg-white  dark:bg-gray-900 rounded-md">
+                  <div className="flex gap-3 flex-wrap">
+                    <input
+                      className="p-2 bg-gray-50 dark:bg-gray-700 dark:text-white text-gray-700 border border-gray-300 dark:border-gray-600 rounded resize-none"
+                      placeholder="Add Node"
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                    />
+                    <button
+                      className=" p-2 bg-emerald-600 text-white rounded hover:bg-emerald-500"
+                      onClick={handleAddNode}
+                    >
+                      Add Node
+                    </button>
+                    <button
+                      onClick={() => handleDeleteNode(selectedNodeId)}
+                      title="delete"
+                      className=" py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500"
+                    >
+                      Delete Node
+                    </button>
+
+                    <button
+                      onClick={() => handleDuplicate(selectedNodeId)}
+                      title="duplicate"
+                      className=" py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-500"
+                    >
+                      Duplicate Node
+                    </button>
+                  </div>
+                </div>
                 <ReactFlow
                   nodes={nodes}
                   nodeTypes={nodeTypes}
@@ -91,6 +139,14 @@ export default function App() {
                   edgeTypes={edgeTypes}
                   onEdgesChange={onEdgesChange}
                   onConnect={onConnect}
+                  onSelectionChange={(params) => {
+                    const selectedNodes = params.nodes;
+                    if (selectedNodes && selectedNodes.length === 1) {
+                      onSelectNode(selectedNodes[0].id);
+                    } else {
+                      setSelectedNodeId("");
+                    }
+                  }}
                   fitView
                   className="dark:bg-gray-800 bg-white rounded-xl border-2 shadow-lg border-slate-200 dark:border-slate-600"
                 >

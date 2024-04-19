@@ -11,7 +11,7 @@ type CustomNodeProps = {
   };
 };
 
-function CustomNode({ data, id }: CustomNodeProps) {
+function SelectedCustomNode({ data, id }: CustomNodeProps) {
   const dispatch = useAppDispatch();
 
   const handleDeleteNode = (id: string) => {
@@ -23,7 +23,7 @@ function CustomNode({ data, id }: CustomNodeProps) {
     dispatch(duplicateNode(id));
   };
   return (
-    <div className="px-4 py-2  flex  border-[1px] shadow-sm rounded-md bg-white  border-neutral-200">
+    <div className="px-4 py-2  flex  border-[1px] shadow-sm rounded-md bg-white  border-emerald-500">
       <button onClick={() => handleDeleteNode(id)} title="delete">
         <CgClose className="w-3 h-3 text-red-500" />{" "}
       </button>
@@ -36,16 +36,16 @@ function CustomNode({ data, id }: CustomNodeProps) {
 
       <Handle
         type="target"
-        position={Position.Left}
+        position={Position.Top}
         className="w-1 h-1 !bg-emerald-500"
       />
       <Handle
         type="source"
-        position={Position.Right}
+        position={Position.Bottom}
         className="w-1 h-1 !bg-emerald-500"
       />
     </div>
   );
 }
 
-export default CustomNode;
+export default SelectedCustomNode;

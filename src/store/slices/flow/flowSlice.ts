@@ -18,7 +18,7 @@ const initialState: NodesState = {
       id: "a",
       type: "new-node",
       position: { x: 0, y: 0 },
-      data: { label: "Ready" },
+      data: { label: "I am Ready" },
     },
     {
       id: "c",
