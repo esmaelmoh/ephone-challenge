@@ -78,7 +78,7 @@ export default function App() {
           </div>
           <div className=" xl:block w-full  ">
             <div className="flex flex-col dark:bg-gray-700 bg-gray-100 ">
-              <div className="graph-container p-12  ">
+              <div className="graph-container p-4  md:p-12">
                 <ReactFlow
                   nodes={nodes}
                   nodeTypes={nodeTypes}
