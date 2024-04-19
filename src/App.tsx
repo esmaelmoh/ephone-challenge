@@ -78,7 +78,7 @@ export default function App() {
           </div>
           <div className="w-full  ">
             <div className="flex flex-col dark:bg-gray-700 bg-gray-100 ">
-              <div className="graph-container p-4  md:p-12 md:pt-4">
+              <div className="graph-container p-4  md:p-8 md:pt-4">
                 <h1 className="text-white text-center p-3 mb-2 bg-gray-900 rounded-md">
                   💡 I used React, ReactFlow, Redux Toolkit, TypeScript and
                   Tailwind CSS

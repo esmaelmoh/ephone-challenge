@@ -23,19 +23,16 @@ function CustomNode({ data, id }: CustomNodeProps) {
     dispatch(duplicateNode(id));
   };
   return (
-    <div className="px-4 py-2 flex border-[1px] shadow-sm rounded-md bg-white  border-neutral-200">
-      <div className="flex flex-col gap-1">
-        <button onClick={() => handleDeleteNode(id)} title="delete">
-          <CgClose className="w-3 h-3 text-red-300" />{" "}
-        </button>
-        <button onClick={() => handleDuplicate(id)} title="duplicate">
-          <HiDuplicate className="w-3 h-3 text-gray-600" />
-        </button>
-      </div>
-      <div className="ml-2">
+    <div className="px-4 py-2  flex  border-[1px] shadow-sm rounded-md bg-white  border-neutral-200">
+      <button onClick={() => handleDeleteNode(id)} title="delete">
+        <CgClose className="w-3 h-3 text-red-500" />{" "}
+      </button>
+      <div className="mx-3">
         <h6 className="text-sm font-medium">{data.label}</h6>
-        <p className="text-gray-500 text-xs mt-1">{data.label}</p>
       </div>
+      <button onClick={() => handleDuplicate(id)} title="duplicate">
+        <HiDuplicate className="w-3 h-3 text-gray-600" />
+      </button>
 
       <Handle
         type="target"

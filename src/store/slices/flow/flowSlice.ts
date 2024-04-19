@@ -36,7 +36,7 @@ const initialState: NodesState = {
       id: "d",
       type: "new-node",
       position: { x: 0, y: 200 },
-      data: { label: "with ephone!" },
+      data: { label: "with ephone!💡" },
     },
   ],
 };
