@@ -40,12 +40,12 @@ function CustomNode({ data, id }: CustomNodeProps) {
       <Handle
         type="target"
         position={Position.Top}
-        className="w-1 h-1 !bg-teal-500"
+        className="w-1 h-1 !bg-emerald-500"
       />
       <Handle
         type="source"
         position={Position.Bottom}
-        className="w-1 h-1 !bg-teal-500"
+        className="w-1 h-1 !bg-emerald-500"
       />
     </div>
   );
