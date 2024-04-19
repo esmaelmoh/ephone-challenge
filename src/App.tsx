@@ -35,12 +35,12 @@ export default function App() {
     (connection) => setEdges((edges) => addEdge(connection, edges)),
     [setEdges]
   );
-  const count = useAppSelector(selectNodes);
-  console.log(count);
+  const nodesData = useAppSelector(selectNodes);
+  console.log(nodesData);
 
   useEffect(() => {
-    setNodes(count);
-  }, [count]);
+    setNodes(nodesData);
+  }, [nodesData]);
 
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
