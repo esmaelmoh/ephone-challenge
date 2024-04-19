@@ -51,6 +51,17 @@ export default function App() {
     if (text) {
       dispatch(addNode({ id: `${Math.random() * 400}`, label: text }));
       setText("");
+      toast.success("Node Successfully Added!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } else {
       // Show a toast notification
       toast.error("Please add a node!", {
@@ -84,9 +95,9 @@ export default function App() {
   return (
     <>
       {" "}
-      <div className={` ${isDarkMode ? "dark" : ""}`}>
+      <div className={` h-full  ${isDarkMode ? "dark" : ""}`}>
         <ToastContainer />
-        <div className="lg:flex h-full">
+        <div className="lg:flex dark:bg-gray-700 bg-gray-100">
           <div className="lg:w-[500px]  dark:bg-gray-800 bg-white  ">
             <DarkMode />
             <MenuExtractionPanel />
@@ -109,68 +120,66 @@ export default function App() {
               })}
             </div>
           </div>
-          <div className="w-full  ">
-            <div className="flex flex-col dark:bg-gray-700 bg-gray-100 ">
-              <div className="graph-container p-4  md:p-8 md:pt-4">
-                <h1 className="text-white text-center p-3 mb-2 bg-gray-900 rounded-md">
-                  💡 I used React, ReactFlow, Redux Toolkit, TypeScript and
-                  Tailwind CSS
-                </h1>
-                <div className=" shadow-sm dark:text-white text-center p-3 mb-2 bg-white  dark:bg-gray-900 rounded-md">
-                  <div className="flex gap-3 flex-wrap">
-                    <input
-                      className="p-2 bg-gray-50 dark:bg-gray-700 dark:text-white text-gray-700 border border-gray-300 dark:border-gray-600 rounded resize-none"
-                      placeholder="Add Node"
-                      value={text}
-                      onChange={(e) => setText(e.target.value)}
-                    />
-                    <button
-                      className=" p-2 bg-emerald-600 text-white rounded hover:bg-emerald-500"
-                      onClick={handleAddNode}
-                    >
-                      Add Node
-                    </button>
-                    <button
-                      onClick={() => handleDeleteNode(selectedNodeId)}
-                      title="delete"
-                      className=" py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500"
-                    >
-                      Delete Node
-                    </button>
+          <div className="w-full  flex flex-col dark:bg-gray-700 bg-gray-100 ">
+            <div className="graph-container p-4  md:p-8 md:pt-4">
+              <h1 className="text-white text-center p-3 mb-2 bg-gray-900 rounded-md">
+                💡 I used React, ReactFlow, Redux Toolkit, TypeScript and
+                Tailwind CSS
+              </h1>
+              <div className=" shadow-sm dark:text-white text-center p-3 mb-2 bg-white  dark:bg-gray-900 rounded-md">
+                <div className="flex gap-3 flex-wrap">
+                  <input
+                    className="p-2 bg-gray-50 dark:bg-gray-700 dark:text-white text-gray-700 border border-gray-300 dark:border-gray-600 rounded resize-none"
+                    placeholder="Add Node"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                  />
+                  <button
+                    className=" p-2 bg-emerald-600 text-white rounded hover:bg-emerald-500"
+                    onClick={handleAddNode}
+                  >
+                    Add Node
+                  </button>
+                  <button
+                    onClick={() => handleDeleteNode(selectedNodeId)}
+                    title="delete"
+                    className=" py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500"
+                  >
+                    Delete Node
+                  </button>
 
-                    <button
-                      onClick={() => handleDuplicate(selectedNodeId)}
-                      title="duplicate"
-                      className=" py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-500"
-                    >
-                      Duplicate Node
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handleDuplicate(selectedNodeId)}
+                    title="duplicate"
+                    className=" py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-500"
+                  >
+                    Duplicate Node
+                  </button>
                 </div>
-                <ReactFlow
-                  nodes={nodes}
-                  nodeTypes={nodeTypes}
-                  onNodesChange={onNodesChange}
-                  edges={edges}
-                  edgeTypes={edgeTypes}
-                  onEdgesChange={onEdgesChange}
-                  onConnect={onConnect}
-                  onSelectionChange={(params) => {
-                    const selectedNodes = params.nodes;
-                    if (selectedNodes && selectedNodes.length === 1) {
-                      onSelectNode(selectedNodes[0].id);
-                    } else {
-                      setSelectedNodeId("");
-                    }
-                  }}
-                  fitView
-                  className="dark:bg-gray-800 bg-white rounded-xl border-2 shadow-lg border-slate-200 dark:border-slate-600"
-                >
-                  <Background />
-                  <MiniMap />
-                  <Controls />
-                </ReactFlow>
               </div>
+              <ReactFlow
+                nodes={nodes}
+                nodeTypes={nodeTypes}
+                onNodesChange={onNodesChange}
+                edges={edges}
+                edgeTypes={edgeTypes}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                onSelectionChange={(params) => {
+                  const selectedNodes = params.nodes;
+                  if (selectedNodes && selectedNodes.length === 1) {
+                    onSelectNode(selectedNodes[0].id);
+                  } else {
+                    setSelectedNodeId("");
+                  }
+                }}
+                fitView
+                className="dark:bg-gray-800 bg-white rounded-xl border-2 shadow-lg border-slate-200 dark:border-slate-600"
+              >
+                <Background />
+                <MiniMap />
+                <Controls />
+              </ReactFlow>
             </div>
           </div>
         </div>
