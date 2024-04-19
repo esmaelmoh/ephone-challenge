@@ -1,5 +1,4 @@
 import type { Node, NodeTypes } from "reactflow";
-import { PositionLoggerNode } from "./PositionLoggerNode";
 import CustomNode from "./CustomNode";
 
 export const initialNodes = [
@@ -25,7 +24,6 @@ export const initialNodes = [
 ] satisfies Node[];
 
 export const nodeTypes = {
-  "position-logger": PositionLoggerNode,
   "new-node": CustomNode,
   // Add any of your custom nodes here!
 } satisfies NodeTypes;
