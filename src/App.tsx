@@ -1,34 +1,104 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import type { OnConnect } from "reactflow";
 
-function App() {
-  const [count, setCount] = useState(0);
+import { useCallback, useEffect } from "react";
+import {
+  Background,
+  Controls,
+  MiniMap,
+  ReactFlow,
+  addEdge,
+  useNodesState,
+  useEdgesState,
+} from "reactflow";
 
+import { nodeTypes } from "./nodes";
+import { initialEdges, edgeTypes } from "./edges";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { selectNodes } from "./store/slices/flow/flowSlice";
+import "reactflow/dist/base.css";
+import MenuExtractionPanel from "./components/MenuExtraction";
+import { toggleMode } from "./store/slices/theme/themeSlice";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { BiCheck } from "react-icons/bi";
+
+export default function App() {
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const onConnect: OnConnect = useCallback(
+    (connection) => setEdges((edges) => addEdge(connection, edges)),
+    [setEdges]
+  );
+  const count = useAppSelector(selectNodes);
+  console.log(count);
+
+  useEffect(() => {
+    setNodes(count);
+  }, [count]);
+
+  const isDarkMode = useAppSelector((content) => content.theme.isDarkMode);
+  const dispatch = useAppDispatch();
+  const handleToggleDarkMode = () => {
+    dispatch(toggleMode());
+  };
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      {" "}
+      <div className={` ${isDarkMode ? "dark" : ""}`}>
+        <div className="lg:flex h-full">
+          <div className="lg:w-[500px]  dark:bg-gray-800 bg-white  ">
+            <button
+              className="m-4 p-2 border-2 rounded-full border-lime-100 dark:border-gray-700 "
+              onClick={handleToggleDarkMode}
+            >
+              {isDarkMode ? (
+                <MdDarkMode className="h-6 w-6  text-lime-400" />
+              ) : (
+                <MdLightMode className="h-6 w-6 text-lime-400" />
+              )}
+            </button>
+            <MenuExtractionPanel />
+            <div className="p-4">
+              <h2 className="text-lg font-semibold dark:text-white">
+                All Nodes
+              </h2>
+              {nodes.map((node) => {
+                return (
+                  <li
+                    key={node.data.label}
+                    className={
+                      "dark:text-white my-2 dark:bg-gray-700 bg-gray-100 text-gray-700 hover:bg-opacity-75 group flex items-center px-2 py-2  font-medium rounded-md"
+                    }
+                  >
+                    <BiCheck className="mr-3 h-6 w-6 flex-shrink-0 text-emerald-300 " />
+                    {node.data.label}
+                  </li>
+                );
+              })}
+            </div>
+          </div>
+          <div className=" xl:block w-full  ">
+            <div className="flex flex-col dark:bg-gray-700 bg-gray-100 ">
+              <div className="graph-container p-12  ">
+                <ReactFlow
+                  nodes={nodes}
+                  nodeTypes={nodeTypes}
+                  onNodesChange={onNodesChange}
+                  edges={edges}
+                  edgeTypes={edgeTypes}
+                  onEdgesChange={onEdgesChange}
+                  onConnect={onConnect}
+                  fitView
+                  className="dark:bg-gray-800 bg-white rounded-xl border-2 shadow-lg border-slate-200 dark:border-slate-600"
+                >
+                  <Background />
+                  <MiniMap />
+                  <Controls />
+                </ReactFlow>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
-
-export default App;
