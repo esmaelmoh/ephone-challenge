@@ -26,9 +26,12 @@ import {
 } from "./store/slices/flow/flowSlice";
 import "reactflow/dist/base.css";
 import MenuExtractionPanel from "./components/MenuExtraction";
-import { BiCheck } from "react-icons/bi";
+import { BiCheck, BiEdit } from "react-icons/bi";
 import DarkMode from "./components/DarkMode";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import { CgClose } from "react-icons/cg";
+import { HiDuplicate } from "react-icons/hi";
+import Header from "./components/Header";
 
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -112,6 +115,9 @@ export default function App() {
     console.log(id, "9854378");
     dispatch(duplicateNode(id));
   };
+  const handleEditMode = () => {
+    dispatch(setEditMode({ mode: true }));
+  };
 
   return (
     <>
@@ -129,13 +135,34 @@ export default function App() {
               {nodes.map((node) => {
                 return (
                   <li
+                    onClick={() => dispatch(setSelecteNodeId({ id: node.id }))}
                     key={node.data.label}
                     className={
-                      "dark:text-white my-2 dark:bg-gray-700 bg-gray-100 text-gray-700 hover:bg-opacity-75 group flex items-center px-2 py-2  font-medium rounded-md"
+                      "dark:text-white flex justify-between my-2 dark:bg-gray-700 bg-gray-100 text-gray-700 hover:bg-opacity-75 group  items-center px-2 py-2  font-medium rounded-md"
                     }
                   >
-                    <BiCheck className="mr-3 h-6 w-6 flex-shrink-0 text-emerald-300 " />
-                    {node.data.label}
+                    <div className="flex">
+                      <BiCheck className="mr-3 h-6 w-6 flex-shrink-0 text-emerald-300 " />
+                      {node.data.label}
+                    </div>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => handleDeleteNode(node.id)}
+                        title="delete"
+                      >
+                        <CgClose className="h-6 w-6 text-red-500" />{" "}
+                      </button>
+
+                      <button
+                        onClick={() => handleDuplicate(node.id)}
+                        title="duplicate"
+                      >
+                        <HiDuplicate className="h-6 w-6 text-gray-600" />
+                      </button>
+                      <button onClick={handleEditMode} title="duplicate">
+                        <BiEdit className="h-6 w-6 text-amber-600" />
+                      </button>
+                    </div>
                   </li>
                 );
               })}
@@ -143,10 +170,7 @@ export default function App() {
           </div>
           <div className=" xl:block w-full  ">
             <div className="flex flex-col dark:bg-gray-700 bg-gray-100 ">
-              <h1 className="mx-4 my-2 text-white text-center p-3  bg-gray-900 rounded-md">
-                💡 I used React, ReactFlow, Redux Toolkit, TypeScript and
-                Tailwind CSS
-              </h1>
+              <Header />
               <div className="mx-4 my-2 shadow-sm dark:text-white text-center p-3 bg-white  dark:bg-gray-900 rounded-md">
                 <div className="flex gap-3 flex-wrap">
                   <input
