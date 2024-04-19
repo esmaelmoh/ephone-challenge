@@ -3,6 +3,7 @@ import { useAppDispatch } from "../store/hooks";
 import { addNode } from "../store/slices/flow/flowSlice";
 import { BiCheck } from "react-icons/bi";
 import { extractMenuItems } from "../utils/menuExtraction";
+import { Bounce, toast } from "react-toastify";
 
 const MenuExtractionPanel = () => {
   const [text, setText] = useState("");
@@ -16,6 +17,17 @@ const MenuExtractionPanel = () => {
 
     if (extractedItems.length === 0) {
       setNoItemsMessage("No valid menu items found");
+      toast.error("Please add a valide menu items!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       setMenuItems([]);
     } else {
       setMenuItems(extractedItems);

@@ -1,4 +1,5 @@
 import type { OnConnect } from "reactflow";
+import "react-toastify/dist/ReactToastify.css";
 
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -24,6 +25,7 @@ import "reactflow/dist/base.css";
 import MenuExtractionPanel from "./components/MenuExtraction";
 import { BiCheck } from "react-icons/bi";
 import DarkMode from "./components/DarkMode";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -49,6 +51,19 @@ export default function App() {
     if (text) {
       dispatch(addNode({ id: `${Math.random() * 400}`, label: text }));
       setText("");
+    } else {
+      // Show a toast notification
+      toast.error("Please add a node!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
   const onSelectNode = useCallback((nodeId: string) => {
@@ -70,6 +85,7 @@ export default function App() {
     <>
       {" "}
       <div className={` ${isDarkMode ? "dark" : ""}`}>
+        <ToastContainer />
         <div className="lg:flex h-full">
           <div className="lg:w-[500px]  dark:bg-gray-800 bg-white  ">
             <DarkMode />
