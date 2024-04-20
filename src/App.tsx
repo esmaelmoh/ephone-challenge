@@ -133,42 +133,48 @@ export default function App() {
               <h2 className="text-lg font-semibold dark:text-white">
                 All Nodes
               </h2>
-              {nodes.map((node) => {
-                return (
-                  <li
-                    onClick={() => dispatch(setSelecteNodeId({ id: node.id }))}
-                    key={node.data.label}
-                    className={`${
-                      selectedIdState === node.id
-                        ? "dark:bg-emerald-700 bg-emerald-100"
-                        : "dark:bg-gray-700 bg-gray-100"
-                    } dark:text-white flex justify-between my-2 text-gray-700 hover:bg-opacity-75 group items-center px-2 py-2 font-medium rounded-md`}
-                  >
-                    <div className="flex">
-                      <BiCheck className="mr-3 h-6 w-6 flex-shrink-0 text-emerald-300 " />
-                      {node.data.label}
-                    </div>
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => handleDeleteNode(node.id)}
-                        title="delete"
-                      >
-                        <CgClose className="h-6 w-6 text-red-500" />{" "}
-                      </button>
+              {nodes.length > 0 ? (
+                nodes.map((node) => {
+                  return (
+                    <li
+                      onClick={() =>
+                        dispatch(setSelecteNodeId({ id: node.id }))
+                      }
+                      key={node.data.id}
+                      className={`${
+                        selectedIdState === node.id
+                          ? "dark:bg-emerald-700 bg-emerald-100"
+                          : "dark:bg-gray-700 bg-gray-100"
+                      } dark:text-white cursor-pointer flex justify-between my-2 text-gray-700 hover:bg-opacity-75 group items-center px-2 py-2 font-medium rounded-md`}
+                    >
+                      <div className="flex">
+                        <BiCheck className="mr-3 h-6 w-6 flex-shrink-0 text-emerald-300 " />
+                        {node.data.label}
+                      </div>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => handleDeleteNode(node.id)}
+                          title="delete"
+                        >
+                          <CgClose className="h-6 w-6 text-red-500" />{" "}
+                        </button>
 
-                      <button
-                        onClick={() => handleDuplicate(node.id)}
-                        title="duplicate"
-                      >
-                        <HiDuplicate className="h-6 w-6 text-gray-600" />
-                      </button>
-                      <button onClick={handleEditMode} title="duplicate">
-                        <BiEdit className="h-6 w-6 text-amber-600" />
-                      </button>
-                    </div>
-                  </li>
-                );
-              })}
+                        <button
+                          onClick={() => handleDuplicate(node.id)}
+                          title="duplicate"
+                        >
+                          <HiDuplicate className="h-6 w-6 text-gray-600" />
+                        </button>
+                        <button onClick={handleEditMode} title="duplicate">
+                          <BiEdit className="h-6 w-6 text-amber-600" />
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })
+              ) : (
+                <p className="dark:text-gray-100 mt-2">No node to display</p>
+              )}
             </div>
           </div>
           <div className=" xl:block w-full  ">
