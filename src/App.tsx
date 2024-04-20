@@ -35,7 +35,6 @@ import Header from "./components/Header";
 
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [selectedNodeId, setSelectedNodeId] = useState<string>("");
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect: OnConnect = useCallback(
     (connection) => setEdges((edges) => addEdge(connection, edges)),
@@ -86,10 +85,6 @@ export default function App() {
       });
     }
   };
-  const onSelectNode = useCallback((nodeId: string) => {
-    setSelectedNodeId(nodeId);
-    dispatch(setSelecteNodeId({ id: nodeId }));
-  }, []);
 
   const handleDeleteNode = (id: string) => {
     console.log(id, "9854378");
@@ -116,9 +111,12 @@ export default function App() {
     console.log(id, "9854378");
     dispatch(duplicateNode(id));
   };
-  const handleEditMode = () => {
+  const handleEditMode = (id: string) => {
+    // setSelectedNodeId(id);
     dispatch(setEditMode({ mode: true }));
   };
+
+  console.log(selectedIdState, "323232");
 
   return (
     <>
@@ -137,10 +135,11 @@ export default function App() {
                 nodes.map((node) => {
                   return (
                     <li
-                      onClick={() =>
-                        dispatch(setSelecteNodeId({ id: node.id }))
-                      }
-                      key={node.data.id}
+                      onClick={() => {
+                        console.log(selectedIdState, "323232", node.id);
+                        dispatch(setSelecteNodeId({ id: node.id }));
+                      }}
+                      key={node.id}
                       className={`${
                         selectedIdState === node.id
                           ? "dark:bg-emerald-700 bg-emerald-100"
@@ -165,7 +164,10 @@ export default function App() {
                         >
                           <HiDuplicate className="h-6 w-6 text-gray-600" />
                         </button>
-                        <button onClick={handleEditMode} title="duplicate">
+                        <button
+                          onClick={() => handleEditMode(node.id)}
+                          title="duplicate"
+                        >
                           <BiEdit className="h-6 w-6 text-amber-600" />
                         </button>
                       </div>
@@ -195,23 +197,23 @@ export default function App() {
                     Add Node
                   </button>
                   <button
-                    onClick={() => handleDeleteNode(selectedNodeId)}
+                    onClick={() => handleDeleteNode(selectedIdState)}
                     title="delete"
                     className={`py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500 ${
-                      !selectedNodeId && "opacity-50 cursor-not-allowed"
+                      !selectedIdState && "opacity-50 cursor-not-allowed"
                     }`}
-                    disabled={!selectedNodeId}
+                    disabled={!selectedIdState}
                   >
                     Delete Node
                   </button>
 
                   <button
-                    onClick={() => handleDuplicate(selectedNodeId)}
+                    onClick={() => handleDuplicate(selectedIdState)}
                     title="duplicate"
                     className={`py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-500 ${
-                      !selectedNodeId && "opacity-50 cursor-not-allowed"
+                      !selectedIdState && "opacity-50 cursor-not-allowed"
                     }`}
-                    disabled={!selectedNodeId}
+                    disabled={!selectedIdState}
                   >
                     Duplicate Node
                   </button>
@@ -227,7 +229,7 @@ export default function App() {
                       />
                       <button
                         className=" p-2 bg-amber-600 text-white rounded hover:bg-amber-500"
-                        onClick={() => handleEditNode(selectedNodeId)}
+                        onClick={() => handleEditNode(selectedIdState)}
                       >
                         Edit Node
                       </button>
@@ -247,9 +249,9 @@ export default function App() {
                   onSelectionChange={(params) => {
                     const selectedNodes = params.nodes;
                     if (selectedNodes && selectedNodes.length === 1) {
-                      onSelectNode(selectedNodes[0].id);
+                      dispatch(setSelecteNodeId({ id: selectedNodes[0].id }));
                     } else {
-                      setSelectedNodeId("");
+                      dispatch(setSelecteNodeId({}));
                     }
                   }}
                   fitView
