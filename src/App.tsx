@@ -191,7 +191,10 @@ export default function App() {
                   <button
                     onClick={() => handleDeleteNode(selectedNodeId)}
                     title="delete"
-                    className=" py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500"
+                    className={`py-2 px-4 bg-red-600 text-white rounded hover:bg-red-500 ${
+                      !selectedNodeId && "opacity-50 cursor-not-allowed"
+                    }`}
+                    disabled={!selectedNodeId}
                   >
                     Delete Node
                   </button>
@@ -199,10 +202,14 @@ export default function App() {
                   <button
                     onClick={() => handleDuplicate(selectedNodeId)}
                     title="duplicate"
-                    className=" py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-500"
+                    className={`py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-500 ${
+                      !selectedNodeId && "opacity-50 cursor-not-allowed"
+                    }`}
+                    disabled={!selectedNodeId}
                   >
                     Duplicate Node
                   </button>
+
                   {editMode && (
                     <>
                       {" "}
