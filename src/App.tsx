@@ -111,7 +111,7 @@ export default function App() {
     console.log(id, "9854378");
     dispatch(duplicateNode(id));
   };
-  const handleEditMode = (id: string) => {
+  const handleEditMode = () => {
     // setSelectedNodeId(id);
     dispatch(setEditMode({ mode: true }));
   };
@@ -165,7 +165,7 @@ export default function App() {
                           <HiDuplicate className="h-6 w-6 text-gray-600" />
                         </button>
                         <button
-                          onClick={() => handleEditMode(node.id)}
+                          onClick={() => handleEditMode()}
                           title="duplicate"
                         >
                           <BiEdit className="h-6 w-6 text-amber-600" />
