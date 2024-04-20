@@ -12,7 +12,7 @@ const DarkMode = () => {
 
   return (
     <button
-      className="m-4 p-2 border-2 rounded-full border-lime-100 dark:border-gray-700 "
+      className="m-4 p-2 border-2 rounded-full border-lime-400 dark:border-gray-700 "
       onClick={handleToggleDarkMode}
     >
       {isDarkMode ? (
